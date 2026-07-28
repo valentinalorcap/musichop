@@ -5,7 +5,7 @@ import Stage2File from './components/Stage2File'
 import Stage3Playlists from './components/Stage3Playlists'
 import Stage4Migration from './components/Stage4Migration'
 import Stage5Report from './components/Stage5Report'
-import type { SpotifyUser, StageId } from './types'
+import type { ParsedLibrary, SpotifyUser, StageId } from './types'
 import {
   buildAuthUrl,
   getCurrentUser,
@@ -23,6 +23,9 @@ export default function App() {
   const [user, setUser] = useState<SpotifyUser | null>(getStoredUser())
   const [connecting, setConnecting] = useState(false)
   const [authError, setAuthError] = useState<string | null>(null)
+
+  // ── Biblioteca de Apple Music ──
+  const [library, setLibrary] = useState<ParsedLibrary | null>(null)
 
   const goTo = (id: StageId) => {
     setCurrent(id)
@@ -84,8 +87,8 @@ export default function App() {
         onPrev: current > 1 ? prev : undefined,
         onNext: current < 5 ? next : undefined,
         hidePrev: current === 1,
-        // el paso 1 solo avanza si hay sesión conectada
-        nextDisabled: current === 1 && !user,
+        // gating por paso: 1 requiere sesión, 2 requiere biblioteca cargada
+        nextDisabled: (current === 1 && !user) || (current === 2 && !library),
       }}
     >
       {current === 1 && (
@@ -97,7 +100,9 @@ export default function App() {
           onDisconnect={handleDisconnect}
         />
       )}
-      {current === 2 && <Stage2File />}
+      {current === 2 && (
+        <Stage2File library={library} onParsed={setLibrary} onReset={() => setLibrary(null)} />
+      )}
       {current === 3 && <Stage3Playlists />}
       {current === 4 && <Stage4Migration />}
       {current === 5 && <Stage5Report />}
