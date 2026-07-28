@@ -5,7 +5,7 @@ import Stage2File from './components/Stage2File'
 import Stage3Playlists from './components/Stage3Playlists'
 import Stage4Migration from './components/Stage4Migration'
 import Stage5Report from './components/Stage5Report'
-import type { ParsedLibrary, SpotifyUser, StageId } from './types'
+import type { MigrationResult, ParsedLibrary, SpotifyUser, StageId } from './types'
 import {
   buildAuthUrl,
   getCurrentUser,
@@ -30,6 +30,9 @@ export default function App() {
 
   // ── Selección de playlists (persistida en localStorage) ──
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+
+  // ── Resultado de la migración ──
+  const [result, setResult] = useState<MigrationResult | null>(null)
 
   const persistSelection = (ids: Set<string>) => {
     setSelectedIds(ids)
@@ -116,17 +119,22 @@ export default function App() {
       current={current}
       maxReached={maxReached}
       onStepClick={goTo}
-      nav={{
-        onPrev: current > 1 ? prev : undefined,
-        onNext: current < 5 ? next : undefined,
-        hidePrev: current === 1,
-        // gating: 1 requiere sesión, 2 requiere biblioteca, 3 al menos una playlist
-        nextDisabled:
-          (current === 1 && !user) ||
-          (current === 2 && !library) ||
-          (current === 3 && selectedIds.size === 0),
-        nextLabel: current === 3 ? 'Empezar migración' : undefined,
-      }}
+      // pasos 4 (migración) y 5 (informe) manejan su propia navegación
+      nav={
+        current <= 3
+          ? {
+              onPrev: current > 1 ? prev : undefined,
+              onNext: next,
+              hidePrev: current === 1,
+              // gating: 1 requiere sesión, 2 requiere biblioteca, 3 al menos una playlist
+              nextDisabled:
+                (current === 1 && !user) ||
+                (current === 2 && !library) ||
+                (current === 3 && selectedIds.size === 0),
+              nextLabel: current === 3 ? 'Empezar migración' : undefined,
+            }
+          : undefined
+      }
     >
       {current === 1 && (
         <Stage1Spotify
@@ -148,8 +156,16 @@ export default function App() {
           onToggleAll={toggleAllPlaylists}
         />
       )}
-      {current === 4 && <Stage4Migration />}
-      {current === 5 && <Stage5Report />}
+      {current === 4 && library && user && (
+        <Stage4Migration
+          library={library}
+          selectedIds={selectedIds}
+          user={user}
+          onComplete={setResult}
+          onGoToReport={() => goTo(5)}
+        />
+      )}
+      {current === 5 && result && <Stage5Report />}
     </Wizard>
   )
 }
