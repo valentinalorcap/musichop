@@ -14,6 +14,7 @@ import {
   isConnected,
   logout,
 } from './lib/spotify'
+import { storage, KEYS } from './lib/storage'
 
 export default function App() {
   const [current, setCurrent] = useState<StageId>(1)
@@ -26,6 +27,38 @@ export default function App() {
 
   // ── Biblioteca de Apple Music ──
   const [library, setLibrary] = useState<ParsedLibrary | null>(null)
+
+  // ── Selección de playlists (persistida en localStorage) ──
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+
+  const persistSelection = (ids: Set<string>) => {
+    setSelectedIds(ids)
+    storage.write(KEYS.selection, [...ids])
+  }
+
+  const handleLibraryParsed = (lib: ParsedLibrary) => {
+    setLibrary(lib)
+    const available = new Set(lib.playlists.map((p) => p.id))
+    const stored = storage.read<string[]>(KEYS.selection)
+    // Restaurar selección previa si aplica; por defecto, todas seleccionadas
+    const restored = stored?.filter((id) => available.has(id)) ?? null
+    setSelectedIds(restored && restored.length > 0 ? new Set(restored) : available)
+  }
+
+  const handleLibraryReset = () => {
+    setLibrary(null)
+    setSelectedIds(new Set())
+  }
+
+  const togglePlaylist = (id: string) => {
+    const next = new Set(selectedIds)
+    next.has(id) ? next.delete(id) : next.add(id)
+    persistSelection(next)
+  }
+
+  const toggleAllPlaylists = (select: boolean) => {
+    persistSelection(select && library ? new Set(library.playlists.map((p) => p.id)) : new Set())
+  }
 
   const goTo = (id: StageId) => {
     setCurrent(id)
@@ -87,8 +120,12 @@ export default function App() {
         onPrev: current > 1 ? prev : undefined,
         onNext: current < 5 ? next : undefined,
         hidePrev: current === 1,
-        // gating por paso: 1 requiere sesión, 2 requiere biblioteca cargada
-        nextDisabled: (current === 1 && !user) || (current === 2 && !library),
+        // gating: 1 requiere sesión, 2 requiere biblioteca, 3 al menos una playlist
+        nextDisabled:
+          (current === 1 && !user) ||
+          (current === 2 && !library) ||
+          (current === 3 && selectedIds.size === 0),
+        nextLabel: current === 3 ? 'Empezar migración' : undefined,
       }}
     >
       {current === 1 && (
@@ -101,9 +138,16 @@ export default function App() {
         />
       )}
       {current === 2 && (
-        <Stage2File library={library} onParsed={setLibrary} onReset={() => setLibrary(null)} />
+        <Stage2File library={library} onParsed={handleLibraryParsed} onReset={handleLibraryReset} />
       )}
-      {current === 3 && <Stage3Playlists />}
+      {current === 3 && library && (
+        <Stage3Playlists
+          library={library}
+          selectedIds={selectedIds}
+          onToggle={togglePlaylist}
+          onToggleAll={toggleAllPlaylists}
+        />
+      )}
       {current === 4 && <Stage4Migration />}
       {current === 5 && <Stage5Report />}
     </Wizard>
