@@ -1,0 +1,153 @@
+.wizard {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar con logo ── */
+.wizard-topbar {
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.wizard-logo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.wizard-logo span { color: var(--accent); }
+
+/* ── Stepper ── */
+.stepper {
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 24px 8px;
+  display: flex;
+  align-items: flex-start;
+}
+.step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  min-width: 0;
+}
+/* línea conectora */
+.step::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+.step:first-child::before { display: none; }
+.step.done::before,
+.step.active::before { background: var(--accent); }
+
+.step-dot {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--bg3);
+  border: 2px solid var(--border);
+  color: var(--muted2);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.step.active .step-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a0a06;
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.step.done .step-dot {
+  background: var(--green-soft);
+  border-color: var(--green);
+  color: var(--green);
+}
+.step-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted2);
+  text-align: center;
+  white-space: nowrap;
+}
+.step.active .step-label { color: var(--accent); }
+.step.done .step-label { color: var(--green); }
+
+/* ── Contenido del stage ── */
+.wizard-body {
+  flex: 1;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ── Footer nav ── */
+.wizard-nav {
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 8px 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ── Bloques reutilizables de stage ── */
+.stage-head { margin-bottom: 28px; }
+.stage-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.stage-title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  text-wrap: balance;
+}
+.stage-subtitle {
+  font-size: 14.5px;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 56ch;
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+@media (max-width: 560px) {
+  .step-label { display: none; }
+  .stage-title { font-size: 22px; }
+}
