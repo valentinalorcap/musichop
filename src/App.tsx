@@ -15,6 +15,7 @@ import {
   logout,
 } from './lib/spotify'
 import { storage, KEYS } from './lib/storage'
+import { clearProgress } from './lib/migrator'
 
 export default function App() {
   const [current, setCurrent] = useState<StageId>(1)
@@ -61,6 +62,17 @@ export default function App() {
 
   const toggleAllPlaylists = (select: boolean) => {
     persistSelection(select && library ? new Set(library.playlists.map((p) => p.id)) : new Set())
+  }
+
+  // "Migrar otra biblioteca": limpia el estado (mantiene la sesión de Spotify) y vuelve al inicio
+  const handleRestart = () => {
+    clearProgress()
+    storage.remove(KEYS.selection)
+    setLibrary(null)
+    setSelectedIds(new Set())
+    setResult(null)
+    setCurrent(1)
+    setMaxReached(1)
   }
 
   const goTo = (id: StageId) => {
@@ -165,7 +177,7 @@ export default function App() {
           onGoToReport={() => goTo(5)}
         />
       )}
-      {current === 5 && result && <Stage5Report />}
+      {current === 5 && result && <Stage5Report result={result} onRestart={handleRestart} />}
     </Wizard>
   )
 }
