@@ -25,9 +25,9 @@ export default function Stage3Playlists({ library, selectedIds, onToggle, onTogg
     <div>
       <div className="stage-head">
         <div className="stage-eyebrow">Paso 3 de 5</div>
-        <h1 className="stage-title">Elegí qué playlists migrar</h1>
+        <h1 className="stage-title">Elige qué playlists migrar</h1>
         <p className="stage-subtitle">
-          Se van a crear en tu Spotify con el mismo nombre. Podés dejar afuera las que no quieras.
+          Se crearán en tu Spotify con el mismo nombre. Puedes dejar fuera las que no quieras.
         </p>
       </div>
 
@@ -73,7 +73,7 @@ export default function Stage3Playlists({ library, selectedIds, onToggle, onTogg
 
       {noneSelected && (
         <div className="notice notice-warn" style={{ marginTop: 16 }}>
-          Seleccioná al menos una playlist para continuar.
+          Selecciona al menos una playlist para continuar.
         </div>
       )}
     </div>

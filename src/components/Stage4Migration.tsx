@@ -105,7 +105,7 @@ export default function Stage4Migration({ library, selectedIds, user, onComplete
           <label className="config-row">
             <span>
               <strong>Playlists públicas</strong>
-              <small>Si está apagado, se crean como privadas (solo vos las ves).</small>
+              <small>Si está apagado, se crean como privadas (solo tú las ves).</small>
             </span>
             <input type="checkbox" checked={makePublic} onChange={(e) => setMakePublic(e.target.checked)} />
           </label>

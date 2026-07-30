@@ -3,10 +3,10 @@ import type { StageId, StageMeta } from '../types'
 import './Wizard.css'
 
 export const STAGES: StageMeta[] = [
-  { id: 1, label: 'Conectá Spotify', short: 'Spotify' },
-  { id: 2, label: 'Subí tu archivo', short: 'Archivo' },
-  { id: 3, label: 'Elegí playlists', short: 'Playlists' },
-  { id: 4, label: 'Migrá', short: 'Migrar' },
+  { id: 1, label: 'Conecta Spotify', short: 'Spotify' },
+  { id: 2, label: 'Sube tu archivo', short: 'Archivo' },
+  { id: 3, label: 'Elige playlists', short: 'Playlists' },
+  { id: 4, label: 'Migra', short: 'Migrar' },
   { id: 5, label: 'Informe', short: 'Informe' },
 ]
 
