@@ -29,8 +29,8 @@ persona necesita el suyo para tener su propio rate limit:
 
 1. Entrá a [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) y creá una app.
 2. En **Redirect URIs**, agregá las dos URLs (según dónde la uses):
-   - Local: `http://127.0.0.1:5173/spotify-music-importer/`
-   - Producción: `https://valentinalorcap.github.io/spotify-music-importer/`
+   - Local: `http://127.0.0.1:5173/`
+   - Producción: `https://<tu-proyecto>.vercel.app/`
 3. Copiá el **Client ID**.
 
 > ⚠️ Spotify ya no acepta `localhost`: en local hay que usar la IP de loopback `127.0.0.1`.
@@ -50,7 +50,7 @@ npm install
 npm run dev
 ```
 
-Abrí **http://127.0.0.1:5173/spotify-music-importer/** y seguí el asistente:
+Abrí **http://127.0.0.1:5173/** y seguí el asistente:
 
 1. **Conectá Spotify** → login oficial de Spotify.
 2. **Subí tu archivo** → arrastrá el `Biblioteca.xml`.
@@ -75,19 +75,15 @@ lo ya creado.
 
 ---
 
-## ☁️ Deploy a GitHub Pages
+## ☁️ Deploy en Vercel
 
-El repo incluye un workflow (`.github/workflows/deploy.yml`) que buildea y publica en cada push a
-`main`.
+La app es 100% estática, así que Vercel la detecta como proyecto Vite sin configuración extra.
 
-1. En **Settings → Pages**, elegí **Source: GitHub Actions**.
-2. En **Settings → Secrets and variables → Actions → Variables**, creá una variable
-   `VITE_SPOTIFY_CLIENT_ID` con tu Client ID.
-3. Hacé push a `main`. Queda en `https://valentinalorcap.github.io/spotify-music-importer/`.
-4. Acordate de agregar esa URL a los **Redirect URIs** de tu app de Spotify.
-
-> Si tu repo tiene otro nombre, cambiá `base` en `vite.config.ts` para que coincida con
-> `/<nombre-del-repo>/`.
+1. Entrá a [vercel.com](https://vercel.com) e importá el repo `spotify-music-importer`.
+2. En **Environment Variables**, agregá `VITE_SPOTIFY_CLIENT_ID` con tu Client ID.
+3. Deploy. Vercel te da una URL de producción (ej. `https://spotify-music-importer.vercel.app/`) y
+   la redeploya automáticamente en cada push a `main`.
+4. Agregá esa URL de producción a los **Redirect URIs** de tu app de Spotify.
 
 ---
 
