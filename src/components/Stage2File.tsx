@@ -47,7 +47,7 @@ export default function Stage2File({ library, onParsed, onReset }: Props) {
     <div>
       <div className="stage-head">
         <div className="stage-eyebrow">Paso 2 de 5</div>
-        <h1 className="stage-title">Subí tu biblioteca de Apple Music</h1>
+        <h1 className="stage-title">Sube tu biblioteca de Apple Music</h1>
         <p className="stage-subtitle">
           El archivo se lee <strong>en tu navegador</strong> — no se sube a ningún servidor. Nada de
           tu música sale de tu computadora.
@@ -104,8 +104,8 @@ export default function Stage2File({ library, onParsed, onReset }: Props) {
           ) : (
             <>
               <div className="dropzone-icon">📁</div>
-              <div className="dropzone-title">Arrastrá tu archivo acá</div>
-              <div className="dropzone-sub">o hacé clic para elegirlo · archivo .xml</div>
+              <div className="dropzone-title">Arrastra tu archivo aquí</div>
+              <div className="dropzone-sub">o haz clic para elegirlo · archivo .xml</div>
             </>
           )}
         </div>
@@ -116,12 +116,12 @@ export default function Stage2File({ library, onParsed, onReset }: Props) {
       <details className="how-to">
         <summary>¿Cómo exporto el archivo desde la app Música?</summary>
         <ol>
-          <li>Abrí la app <strong>Música</strong> en tu Mac.</li>
+          <li>Abre la app <strong>Música</strong> en tu Mac.</li>
           <li>
             En la barra de menú: <code>Archivo → Biblioteca → Exportar biblioteca…</code>
           </li>
           <li>
-            Guardá el archivo <code>Biblioteca.xml</code> donde quieras y subilo acá.
+            Guarda el archivo <code>Biblioteca.xml</code> donde quieras y súbelo aquí.
           </li>
         </ol>
       </details>

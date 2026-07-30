@@ -23,17 +23,17 @@ export default function Stage1Spotify({ user, connecting, error, onConnect, onDi
     <div>
       <div className="stage-head">
         <div className="stage-eyebrow">Paso 1 de 5</div>
-        <h1 className="stage-title">Conectá tu cuenta de Spotify</h1>
+        <h1 className="stage-title">Conecta tu cuenta de Spotify</h1>
         <p className="stage-subtitle">
-          Vamos a crear las playlists en tu cuenta. Autorizás una sola vez con el login oficial de
-          Spotify — nunca vemos tu contraseña.
+          Vamos a crear las playlists en tu cuenta. Autorizas una sola vez con el inicio de sesión
+          oficial de Spotify — nunca vemos tu contraseña.
         </p>
       </div>
 
       {noClientId && (
         <div className="notice notice-warn">
-          <strong>Falta configurar el CLIENT_ID.</strong> Creá un archivo <code>.env</code> con{' '}
-          <code>VITE_SPOTIFY_CLIENT_ID=tu_id</code> y reiniciá el server. Registrá tu app en{' '}
+          <strong>Falta configurar el CLIENT_ID.</strong> Crea un archivo <code>.env</code> con{' '}
+          <code>VITE_SPOTIFY_CLIENT_ID=tu_id</code> y reinicia el servidor. Registra tu app en{' '}
           <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noreferrer">
             developer.spotify.com
           </a>
@@ -74,7 +74,7 @@ export default function Stage1Spotify({ user, connecting, error, onConnect, onDi
               </>
             )}
           </button>
-          <p className="connect-hint">Te vamos a redirigir a Spotify y volver acá automáticamente.</p>
+          <p className="connect-hint">Te redirigiremos a Spotify y volverás aquí automáticamente.</p>
         </div>
       )}
     </div>
