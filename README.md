@@ -1,4 +1,4 @@
-# 🎧 Me cambio a Spotify
+# 🎧 musicHop
 
 Migra tu biblioteca de **Apple Music** a **Spotify** desde el navegador. Sin backend, sin subir
 tu música a ningún lado: el archivo se lee en tu computadora y solo se habla con la API de Spotify
@@ -79,9 +79,9 @@ lo ya creado.
 
 La app es 100% estática, así que Vercel la detecta como proyecto Vite sin configuración extra.
 
-1. Ve a [vercel.com](https://vercel.com) e importa el repo `spotify-music-importer`.
+1. Ve a [vercel.com](https://vercel.com) e importa el repo `musichop`.
 2. En **Environment Variables**, agrega `VITE_SPOTIFY_CLIENT_ID` con tu Client ID.
-3. Deploy. Vercel te da una URL de producción (ej. `https://spotify-music-importer.vercel.app/`) y
+3. Deploy. Vercel te da una URL de producción (ej. `https://musichop.vercel.app/`) y
    la redeploya automáticamente en cada push a `main`.
 4. Agrega esa URL de producción a los **Redirect URIs** de tu app de Spotify.
 
