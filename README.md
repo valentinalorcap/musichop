@@ -2,18 +2,16 @@
 
 > A tool I built to move my music from Apple Music to Spotify quickly. It runs entirely in the browser — no backend, nothing uploaded — reads my exported library, and recreates my playlists on Spotify.
 
-musicHop is a playlist importer I built for myself. After switching from
-Apple Music to Spotify, rebuilding years of playlists by hand wasn't an
-option, so this is a small wizard that connects to Spotify, reads the
-exported library file, and recreates each playlist track by track.
+musicHop is a playlist importer I built to move my music from Apple Music
+to Spotify. Rebuilding years of playlists by hand wasn't an option, so it's
+a small wizard that connects to Spotify, reads the exported library file,
+and recreates each playlist track by track.
 
 Matching is strict: it searches by title and artist, breaks ties by album,
 and anything without an exact match goes into a report (with a CSV to
 download) instead of being replaced by "something close". Nothing leaves
 the browser — the library file is parsed locally and the app only talks to
 the Spotify API.
-
-It's a personal project — built for an audience of one (me), in public.
 
 ## What's inside
 
