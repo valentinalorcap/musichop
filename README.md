@@ -1,97 +1,86 @@
-# 🎧 musicHop
+# musicHop
 
-Migra tu biblioteca de **Apple Music** a **Spotify** desde el navegador. Sin backend, sin subir
-tu música a ningún lado: el archivo se lee en tu computadora y solo se habla con la API de Spotify
-para crear las playlists.
+> A tool I built to move my music from Apple Music to Spotify quickly. It runs entirely in the browser — no backend, nothing uploaded — reads my exported library, and recreates my playlists on Spotify.
 
-- **Stack:** Vite · React · TypeScript · CSS puro
-- **Hosting:** Vercel (gratis)
-- **Privacidad:** 100% del lado del cliente. Tu biblioteca nunca sale de tu navegador.
+musicHop is a playlist importer I built for myself. After switching from
+Apple Music to Spotify, rebuilding years of playlists by hand wasn't an
+option, so this is a small wizard that connects to Spotify, reads the
+exported library file, and recreates each playlist track by track.
 
----
+Matching is strict: it searches by title and artist, breaks ties by album,
+and anything without an exact match goes into a report (with a CSV to
+download) instead of being replaced by "something close". Nothing leaves
+the browser — the library file is parsed locally and the app only talks to
+the Spotify API.
 
-## 🚀 Usarla (en 5 minutos)
+It's a personal project — built for an audience of one (me), in public.
 
-### 1. Exporta tu biblioteca de Apple Music
+## What's inside
 
-En tu Mac, abre la app **Música** y ve a:
+- **Everything runs client-side.** The exported library XML is parsed in
+  the browser with `DOMParser` — no server, nothing uploaded.
+- **Spotify sign-in without a backend.** OAuth with PKCE, so there's no
+  client secret; tokens live in `localStorage` and refresh automatically.
+- **Strict matching, no guessing.** Each track is matched by title +
+  artist with album tie-breaking. Unmatched tracks go to a report, never
+  replaced with an approximation.
+- **A five-step wizard.** Connect Spotify → upload the library → pick
+  playlists → migrate → report.
+- **Resilient migration.** Requests are throttled to respect Spotify's
+  rate limits, tracks are added in batches of 100 in their original order,
+  and progress is checkpointed so an interrupted run resumes without
+  creating duplicates.
+- **A report at the end.** Overall stats, a per-playlist breakdown, and a
+  downloadable CSV of everything that couldn't be matched — local files
+  flagged separately, since they usually aren't in Spotify's catalog.
 
-```
-Archivo → Biblioteca → Exportar biblioteca…
-```
+## Tech stack
 
-Guarda el archivo `Biblioteca.xml`.
+| Layer     | What I use                                                    |
+| --------- | ------------------------------------------------------------ |
+| Framework | React 18 + Vite                                              |
+| Language  | TypeScript (strict)                                          |
+| Styling   | Plain CSS with a custom design-token system                 |
+| Auth      | Spotify OAuth 2.0 with PKCE — no backend, no client secret  |
+| APIs      | Spotify Web API; Apple Music library XML (plist) parsing     |
+| Storage   | localStorage — tokens, playlist selection, resumable progress |
+| Deploy    | Vercel (production on `main`)                                |
 
-### 2. Registra una app en Spotify
+## How matching works
 
-El CLIENT_ID de Spotify es **público** (usamos OAuth con PKCE, no hay client secret), pero cada
-persona necesita el suyo para tener su propio rate limit:
+For each track, musicHop searches Spotify by **title + artist**. When
+several results come back, the tie is broken by **album**. Without an exact
+match, the track is left out — never replaced with an approximation — and
+listed in the final report with all its details. Local files (songs that
+were personal files rather than store tracks) are flagged separately, since
+they usually aren't in Spotify's catalog.
 
-1. Ve a [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) y crea una app.
-2. En **Redirect URIs**, agrega las dos URLs (según dónde la uses):
-   - Local: `http://127.0.0.1:5173/`
-   - Producción: `https://<tu-proyecto>.vercel.app/`
-3. Copia el **Client ID**.
+The migration respects Spotify's rate limits (a pause between searches, and
+it waits out any `429` using the `Retry-After` header). An interrupted run
+can resume from a checkpoint without recreating what already exists.
 
-> ⚠️ Spotify ya no acepta `localhost`: en local hay que usar la IP de loopback `127.0.0.1`.
-
-### 3. Configura el CLIENT_ID
+## Getting started
 
 ```bash
-cp .env.example .env
-# edita .env y pega tu Client ID en VITE_SPOTIFY_CLIENT_ID
-```
-
-### 4. Ejecuta la app
-
-```bash
-nvm use          # usa Node 20 (ver .nvmrc)
+git clone https://github.com/valentinalorcap/musichop.git
+cd musichop
+nvm use            # uses Node 20 from .nvmrc
 npm install
+cp .env.example .env
+# add VITE_SPOTIFY_CLIENT_ID — register an app at developer.spotify.com
 npm run dev
 ```
 
-Abre **http://127.0.0.1:5173/** y sigue el asistente:
+The app runs on http://127.0.0.1:5173/.
 
-1. **Conecta Spotify** → inicio de sesión oficial de Spotify.
-2. **Sube tu archivo** → arrastra el `Biblioteca.xml`.
-3. **Elige playlists** → marca las que quieras migrar.
-4. **Migra** → se crean las playlists y se agregan las canciones.
-5. **Informe** → resumen + descarga del CSV de las que no se encontraron.
+The Spotify client id comes from a registered app. With PKCE it's public
+(no secret), and the redirect URI must include `http://127.0.0.1:5173/` for
+local use, plus the production URL once deployed. Spotify no longer accepts
+`localhost`, so the loopback IP `127.0.0.1` is required locally.
 
----
+## Deploy
 
-## 🧠 Cómo funciona el matching
-
-Para cada canción se busca en Spotify por **título + artista**. Si hay varias coincidencias, se
-desempata por **álbum**. Si no hay una coincidencia exacta, la canción **no se agrega** (nunca se
-mete "algo parecido") y queda listada en el informe final con todos sus datos.
-
-Los **archivos locales** (canciones que eran tus propios archivos, no de una tienda) se marcan
-aparte porque probablemente no existan en el catálogo de Spotify.
-
-La migración respeta el rate limit de Spotify (pausa entre búsquedas, y si recibe un `429`
-espera lo que indique el header `Retry-After`). Si se interrumpe, puedes retomarla sin duplicar
-lo ya creado.
-
----
-
-## ☁️ Deploy en Vercel
-
-La app es 100% estática, así que Vercel la detecta como proyecto Vite sin configuración extra.
-
-1. Ve a [vercel.com](https://vercel.com) e importa el repo `musichop`.
-2. En **Environment Variables**, agrega `VITE_SPOTIFY_CLIENT_ID` con tu Client ID.
-3. Deploy. Vercel te da una URL de producción (ej. `https://musichop.vercel.app/`) y
-   la redeploya automáticamente en cada push a `main`.
-4. Agrega esa URL de producción a los **Redirect URIs** de tu app de Spotify.
-
----
-
-## 🛠️ Scripts
-
-| Comando | Qué hace |
-|---|---|
-| `npm run dev` | Servidor de desarrollo |
-| `npm run build` | Typecheck + build de producción a `dist/` |
-| `npm run preview` | Sirve el build de producción localmente |
-| `npm run typecheck` | Solo chequeo de tipos |
+Deployed on Vercel as a static Vite build, detected with no extra config.
+The Spotify client id is provided through the `VITE_SPOTIFY_CLIENT_ID`
+environment variable, and the production URL is registered as a Spotify
+redirect URI.
