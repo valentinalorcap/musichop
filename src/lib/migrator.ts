@@ -139,7 +139,7 @@ async function createPlaylist(
       body: JSON.stringify({
         name,
         public: isPublic,
-        description: 'Migrada desde Apple Music con «Me cambio a Spotify»',
+        description: 'Migrada con musicHop',
       }),
     },
   )

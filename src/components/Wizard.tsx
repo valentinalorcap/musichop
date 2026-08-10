@@ -33,7 +33,7 @@ export default function Wizard({ current, maxReached, onStepClick, children, nav
     <div className="wizard">
       <div className="wizard-topbar">
         <span className="wizard-logo">
-          Me cambio a <span>Spotify</span>
+          music<span>Hop</span>
         </span>
       </div>
 
