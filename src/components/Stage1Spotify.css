@@ -80,3 +80,19 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ── Aviso de limitación de la API de Spotify ── */
+.api-warning {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.62);
+}
+.api-warning::before {
+  content: '⚠ ';
+  color: var(--accent);
+}
