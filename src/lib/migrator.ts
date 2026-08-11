@@ -128,21 +128,20 @@ async function fetchExistingPlaylists(): Promise<Map<string, string>> {
 }
 
 async function createPlaylist(
-  userId: string,
   name: string,
   isPublic: boolean,
 ): Promise<{ id: string; url: string | null }> {
-  const p = await api<{ id: string; external_urls?: { spotify?: string } }>(
-    `/users/${encodeURIComponent(userId)}/playlists`,
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        name,
-        public: isPublic,
-        description: 'Migrada con musicHop',
-      }),
-    },
-  )
+  // Spotify migró la creación de playlists a POST /me/playlists. El endpoint
+  // anterior /users/{id}/playlists devuelve 403 en apps en modo desarrollo
+  // desde la migración de la Web API (2026).
+  const p = await api<{ id: string; external_urls?: { spotify?: string } }>('/me/playlists', {
+    method: 'POST',
+    body: JSON.stringify({
+      name,
+      public: isPublic,
+      description: 'Migrada con musicHop',
+    }),
+  })
   return { id: p.id, url: p.external_urls?.spotify ?? null }
 }
 
@@ -275,7 +274,7 @@ export function runMigration(
         let spotifyUrl: string | null = null
         if (!spotifyPlaylistId) {
           handlers.onLog({ kind: 'info', text: `＋ Creando playlist "${playlist.name}"…` })
-          const created = await createPlaylist(user.id, playlist.name, makePublic)
+          const created = await createPlaylist(playlist.name, makePublic)
           spotifyPlaylistId = created.id
           spotifyUrl = created.url
           createdPlaylists[playlist.id] = spotifyPlaylistId
