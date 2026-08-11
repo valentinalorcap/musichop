@@ -13,6 +13,10 @@ download) instead of being replaced by "something close". Nothing leaves
 the browser — the library file is parsed locally and the app only talks to
 the Spotify API.
 
+**Live demo:** https://music-hop.vercel.app
+
+> **⚠️ Known limitation — Spotify API access.** In November 2024 Spotify restricted catalog endpoints (including search) for development-mode apps. As a personal project, musicHop cannot search Spotify's catalog to match and add tracks.
+
 ## What's inside
 
 - **Everything runs client-side.** The exported library XML is parsed in

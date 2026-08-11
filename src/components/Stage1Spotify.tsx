@@ -44,19 +44,26 @@ export default function Stage1Spotify({ user, connecting, error, onConnect, onDi
       {error && <div className="notice notice-error">{error}</div>}
 
       {user ? (
-        <div className="connected-card">
-          <div className="connected-avatar">{(user.display_name ?? '?').charAt(0).toUpperCase()}</div>
-          <div className="connected-info">
-            <div className="connected-name">
-              <span className="connected-check">✓</span>
-              {user.display_name ?? 'Cuenta conectada'}
+        <>
+          <div className="connected-card">
+            <div className="connected-avatar">{(user.display_name ?? '?').charAt(0).toUpperCase()}</div>
+            <div className="connected-info">
+              <div className="connected-name">
+                <span className="connected-check">✓</span>
+                {user.display_name ?? 'Cuenta conectada'}
+              </div>
+              {user.email && <div className="connected-email">{user.email}</div>}
             </div>
-            {user.email && <div className="connected-email">{user.email}</div>}
+            <button className="btn btn-ghost" onClick={onDisconnect}>
+              Desconectar
+            </button>
           </div>
-          <button className="btn btn-ghost" onClick={onDisconnect}>
-            Desconectar
-          </button>
-        </div>
+          <div className="api-warning">
+            No es posible obtener las canciones desde Spotify. Desde noviembre de 2024, Spotify
+            restringió el acceso a la búsqueda de su catálogo para aplicaciones personales, así que
+            musicHop no puede encontrar ni agregar las canciones.
+          </div>
+        </>
       ) : (
         <div className="connect-box">
           <button
