@@ -236,7 +236,19 @@ export function runMigration(
         handlers.onLog({ kind: 'info', text: `Retomando migración desde donde quedó…` })
       }
 
-      const existing = await fetchExistingPlaylists()
+      // La lista de playlists existentes solo se necesita para la estrategia "saltar".
+      // Se envuelve en try/catch para que un fallo de permisos nunca corte la migración.
+      let existing = new Map<string, string>()
+      if (duplicateStrategy === 'skip') {
+        try {
+          existing = await fetchExistingPlaylists()
+        } catch {
+          handlers.onLog({
+            kind: 'info',
+            text: 'No se pudieron leer las playlists existentes; se crearán nuevas.',
+          })
+        }
+      }
 
       for (let i = startIndex; i < selected.length; i++) {
         if (cancelState.cancelled) {

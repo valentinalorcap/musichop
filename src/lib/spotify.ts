@@ -13,6 +13,7 @@ export const API_BASE = 'https://api.spotify.com/v1'
 const SCOPES = [
   'playlist-modify-public',
   'playlist-modify-private',
+  'playlist-read-private', // leer playlists existentes para la opción "saltar duplicados"
   'user-read-private',
   'user-read-email',
 ]
