@@ -52,7 +52,7 @@
 }
 .step:first-child::before { display: none; }
 .step.done::before,
-.step.active::before { background: var(--accent); }
+.step.active::before { background: var(--green); }
 
 .step-dot {
   position: relative;
@@ -78,9 +78,9 @@
   box-shadow: 0 0 0 4px var(--accent-soft);
 }
 .step.done .step-dot {
-  background: var(--green-soft);
+  background: linear-gradient(160deg, #5ce88f 0%, #34c26c 100%);
   border-color: var(--green);
-  color: var(--green);
+  color: #06210f;
 }
 .step-label {
   font-size: 11px;

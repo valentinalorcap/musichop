@@ -25,7 +25,7 @@ export default function Stage1Spotify({ user, connecting, error, onConnect, onDi
         <div className="stage-eyebrow">Paso 1 de 5</div>
         <h1 className="stage-title">Conecta tu cuenta de Spotify</h1>
         <p className="stage-subtitle">
-          Vamos a crear las playlists en tu cuenta. Autorizas una sola vez con el inicio de sesión
+          Se van a crear las playlists en tu cuenta. Autorizas una sola vez con el inicio de sesión
           oficial de Spotify — nunca vemos tu contraseña.
         </p>
       </div>

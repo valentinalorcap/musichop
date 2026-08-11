@@ -89,7 +89,7 @@ export default function Stage4Migration({ library, selectedIds, user, onComplete
           <div className="stage-eyebrow">Paso 4 de 5</div>
           <h1 className="stage-title">Todo listo para migrar</h1>
           <p className="stage-subtitle">
-            Vamos a crear <strong>{selectedPlaylists.length}</strong> playlists con{' '}
+            Se van a crear <strong>{selectedPlaylists.length}</strong> playlists con{' '}
             <strong>{tracksTotal.toLocaleString('es')}</strong> canciones en tu Spotify.
           </p>
         </div>
@@ -105,7 +105,6 @@ export default function Stage4Migration({ library, selectedIds, user, onComplete
           <label className="config-row">
             <span>
               <strong>Playlists públicas</strong>
-              <small>Si está apagado, se crean como privadas (solo tú las ves).</small>
             </span>
             <input type="checkbox" checked={makePublic} onChange={(e) => setMakePublic(e.target.checked)} />
           </label>
