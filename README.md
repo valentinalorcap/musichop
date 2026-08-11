@@ -2,6 +2,12 @@
 
 > A tool to move my music from Apple Music to Spotify quickly. It runs entirely in the browser — no backend, nothing uploaded — reads my exported library, and recreates my playlists on Spotify.
 
+<p align="center">
+  <img src="screenshots/01-connect.png" alt="Step 1 — connect your Spotify account" width="720" /><br />
+  <img src="screenshots/02-upload.png" alt="Step 2 — upload your Apple Music library" width="720" /><br />
+  <img src="screenshots/03-select.png" alt="Step 3 — choose which playlists to migrate" width="720" />
+</p>
+
 musicHop is a playlist importer that moves my music from Apple Music
 to Spotify. Rebuilding years of playlists by hand wasn't an option, so it's
 a small wizard that connects to Spotify, reads the exported library file,
